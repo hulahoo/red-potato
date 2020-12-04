@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from account.models import User
 from account.serializers import UserSerializer
 from main.models import Category, Product, Comment
 
@@ -10,21 +9,28 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('name', 'slug')
 
 
+
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'text', 'product')
 
+
+class CommentDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('author_id', 'id', 'text', 'product')
+
     def create(self, validated_data):
         request = self.context.get('request')
         validated_data['author_id'] = request.user
-        comment = Comment.objects.create(**validated_data)
+        comment = Product.objects.create(**validated_data)
         return comment
+
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        # representation['author'] = CommentSerializer(instance.author_id).data
-        # representation['text'] = CommentSerializer(instance.text).data
+        representation['author'] = UserSerializer(instance.author_id).data
         return representation
 
 
@@ -34,8 +40,6 @@ class ProductSerializer(serializers.ModelSerializer):
         """И можем оттуда переопределять их методы"""
         model = Product
         fields = ('id', 'title', 'price', 'category')
-
-
 
 
 class ProductDetailsSerializer(serializers.ModelSerializer):
