@@ -13,4 +13,4 @@ class CartPermission(BasePermission):
 
 class IsCartHolder(BasePermission):
     def has_object_permission(self, request, view, obj):
-        return request.user.is_authenticated and obj.author_id == request.user
+        return request.user.is_authenticated and obj.user == request.user

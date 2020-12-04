@@ -13,6 +13,7 @@ class ProductViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category', 'title', 'price']
 
+
     def get_permissions(self):
         """Сюда прилетает какое то действие и если оно равно чтению то ничего не происходит, а если дургое то идет по условию"""
         if self.action in ['list', 'retrieve']:

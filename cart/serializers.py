@@ -1,12 +1,9 @@
 from rest_framework import serializers
-from main.serializers import ProductDetailsSerializer
-from main.models import Cart, Product, CartProduct
+from main.models import Product
+from .models import Cart, CartProduct
 
 
-# создаем сериализатор orderproduct
 class CartProductSerializer(serializers.ModelSerializer):
-    # product = serializers.CharField(max_length=255)
-    # count = serializers.IntegerField()
     class Meta:
         model = CartProduct
         fields = ('product', 'count')
@@ -15,7 +12,6 @@ class CartProductSerializer(serializers.ModelSerializer):
 class CartProductRepresentationSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='product.id')
     title = serializers.CharField(source='product.title')
-
     class Meta:
         model = CartProduct
         fields = ('id', 'title', 'price', 'count')
@@ -31,7 +27,7 @@ class CartSerializer(serializers.ModelSerializer):
     items = CartProductSerializer(many=True, write_only=True)
     class Meta:
         model = Cart
-        fields = ('count', 'items')
+        fields = ('id', 'count', 'items')
 
     def get_total_cost(self, obj):
         return obj.get_total_cost()
@@ -49,11 +45,8 @@ class CartSerializer(serializers.ModelSerializer):
 
         for item in items:
             product = item['product']
-            # print(product)
-            # product_id = request.POST.get('product')
             CartProduct.objects.create(cart=cart, product=product, count=item['count'])
             product.save()
-            # product.clean()
         return cart
 
     def to_representation(self, instance):
