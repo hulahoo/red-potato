@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.permissions import IsAuthenticated
