@@ -14,7 +14,7 @@ from account.serializers import RegisterSerializer, LoginSerializer, RefreshToke
 def send_activation_mail(user):
     """Отпровляем код для подтверджения"""
     code = user.create_activation_code()
-    send_mail('Activation Account', f'Youre Successfully Registered. Please Activate Your Account by Following This Link http://127.0.0.1:8000/account/activate/{code}/', 'test@gmail.com', [user.email,])
+    send_mail('Activation Account', f'Youre Successfully Registered. Please Activate Your Account by Following This Link http://127.0.0.1:8000/account/activate/{code}/', 'biowolf41@gmail.com', [user.email,])
 
 
 

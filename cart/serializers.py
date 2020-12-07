@@ -6,7 +6,8 @@ from .models import Cart, CartProduct
 class CartProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartProduct
-        fields = ('product', 'count')
+        fields = ('product', 'quantity')
+
 
 
 class CartProductRepresentationSerializer(serializers.ModelSerializer):
@@ -14,7 +15,7 @@ class CartProductRepresentationSerializer(serializers.ModelSerializer):
     title = serializers.CharField(source='product.title')
     class Meta:
         model = CartProduct
-        fields = ('id', 'title', 'price', 'count')
+        fields = ('id', 'title', 'price', 'quantity')
 
 
 class AddProductSerializer(serializers.ModelSerializer):
@@ -25,10 +26,10 @@ class AddProductSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     items = CartProductSerializer(many=True, write_only=True)
-    count = serializers.IntegerField(required=False, default=1)
+    quantity = serializers.IntegerField(required=False, default=1)
     class Meta:
         model = Cart
-        fields = ('id', 'count', 'items')
+        fields = ('id', 'quantity', 'items')
 
     def get_total_cost(self, obj):
         return obj.get_total_cost()
@@ -46,14 +47,17 @@ class CartSerializer(serializers.ModelSerializer):
 
         for item in items:
             product = item['product']
-            CartProduct.objects.create(cart=cart, product=product, count=item['count'])
+            CartProduct.objects.create(cart=cart, product=product, count=item['quantity'])
             product.save()
         return cart
 
+
     def update(self, instance, validated_data):
-        instance.count = validated_data.get('count', instance.count)
+        print('hel')
+        instance.quantity = validated_data.get('quantity', instance.count)
         instance.save()
         return instance
+
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
