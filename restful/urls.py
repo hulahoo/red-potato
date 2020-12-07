@@ -17,8 +17,9 @@ urlpatterns = [
     path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    # add this line
-    # path('payments/', include('payments.urls')),
+    # path('cart/', include('cart.urls')),
     path('account/', include('account.urls')),
     path('', include(router.urls)),
+    # add this line
+    # path('payments/', include('payments.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

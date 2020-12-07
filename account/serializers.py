@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('name', 'activation_code')
+        fields = ('email', )
 
 
 class RegisterSerializer(serializers.ModelSerializer):

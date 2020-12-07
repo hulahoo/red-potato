@@ -10,6 +10,9 @@ class Cart(models.Model):
     user = models.ForeignKey(User, related_name="carts", on_delete=models.CASCADE, blank=True, null=True)
     count = models.PositiveIntegerField(default=1)
 
+    def __str__(self):
+        return f"{self.count}"
+
 
 class CartProduct(models.Model):
     product = models.ForeignKey(Product, related_name='products', on_delete=models.CASCADE)

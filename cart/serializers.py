@@ -20,11 +20,12 @@ class CartProductRepresentationSerializer(serializers.ModelSerializer):
 class AddProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id')
+        fields = ('id', )
 
 
 class CartSerializer(serializers.ModelSerializer):
     items = CartProductSerializer(many=True, write_only=True)
+    count = serializers.IntegerField(required=False, default=1)
     class Meta:
         model = Cart
         fields = ('id', 'count', 'items')
@@ -49,8 +50,14 @@ class CartSerializer(serializers.ModelSerializer):
             product.save()
         return cart
 
+    def update(self, instance, validated_data):
+        instance.count = validated_data.get('count', instance.count)
+        instance.save()
+        return instance
+
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['user'] = instance.user.email
         representation['product'] = CartProductRepresentationSerializer(instance.cart.all(), many=True, context=self.context).data
         return representation
+

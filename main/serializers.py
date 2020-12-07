@@ -15,16 +15,10 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('id', 'text', 'product')
 
-
-class CommentDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = ('author_id', 'id', 'text', 'product')
-
     def create(self, validated_data):
         request = self.context.get('request')
-        validated_data['author_id'] = request.user
-        comment = Product.objects.create(**validated_data)
+        validated_data['author_id'] = request.author
+        comment = Comment.objects.create(**validated_data)
         return comment
 
 
@@ -34,12 +28,19 @@ class CommentDetailSerializer(serializers.ModelSerializer):
         return representation
 
 
+class CommentDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('author_id', 'id', 'text', 'product')
+
+
+
 class ProductSerializer(serializers.ModelSerializer):
     """Здесь мы используем как в обычном джанго model и наследуемся от ModelSerializer"""
     class Meta:
         """И можем оттуда переопределять их методы"""
         model = Product
-        fields = ('id', 'title', 'price', 'category')
+        fields = ('id', 'title', 'price', 'category', 'stock')
 
 
 class ProductDetailsSerializer(serializers.ModelSerializer):
@@ -47,7 +48,7 @@ class ProductDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         """И можем оттуда переопределять их методы"""
         model = Product
-        fields = ('id', 'title', 'description', 'price', 'author_id')
+        fields = ('id', 'title', 'description', 'price', 'author_id', 'stock')
 
     def _get_image_url(self, obj):
         """Мы получаем url первой картинки"""

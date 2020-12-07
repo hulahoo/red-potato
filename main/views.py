@@ -36,14 +36,3 @@ class CommentViewSet(viewsets.ModelViewSet):
         else:
             permissions = [IsCommentAuthor, ]
         return [permission() for permission in permissions]
-
-
-# class CustomSearchFilter(filters.SearchFilter):
-#     def get_search_fields(self, view, request):
-#         return request.GET.getlist('search_fields', [])
-
-# class CustomSearchFilter(filters.SearchFilter):
-#     def get_search_fields(self, view, request):
-#         if request.query_params.get('title'):
-#             return ['title']
-#         return super(CustomSearchFilter, self).get_search_fields(view, request)
