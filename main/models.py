@@ -32,7 +32,7 @@ class Comment(models.Model):
     author_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.author_id
+        return f'{self.author_id}'
 
 
 class ProductImage(models.Model):

@@ -6,4 +6,4 @@ django-filter
 djangorestframework_simplejwt
 djangorestframework
 djangorestframework-jsonapi == 4.0.0
-stripe
+braintree == 4.5.0

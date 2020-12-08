@@ -43,10 +43,6 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = []
     objects = UserManager()
 
-    def __str__(self):
-        """Здесь мы вывыодим читабельный текс"""
-        return self.email
-
     def has_perm(self, perm, obj=None):
         """Проверяет на доступ только суперюзеру"""
         return self.is_active
@@ -72,4 +68,5 @@ class User(AbstractBaseUser):
         self.activation_code = ""  # так как код активации одноразовый мы его очищаем
         self.save()  # и здесь сохраняем пользователя
 
-
+    def __str__(self):
+        return f'{self.email}'

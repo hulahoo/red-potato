@@ -26,10 +26,10 @@ class AddProductSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     items = CartProductSerializer(many=True, write_only=True)
-    quantity = serializers.IntegerField(required=False, default=1)
+    count = serializers.IntegerField(required=False, default=1)
     class Meta:
         model = Cart
-        fields = ('id', 'quantity', 'items')
+        fields = ('id', 'count', 'items')
 
     def get_total_cost(self, obj):
         return obj.get_total_cost()
@@ -47,14 +47,14 @@ class CartSerializer(serializers.ModelSerializer):
 
         for item in items:
             product = item['product']
-            CartProduct.objects.create(cart=cart, product=product, count=item['quantity'])
+            CartProduct.objects.create(cart=cart, product=product, quantity=item['quantity'])
             product.save()
         return cart
 
 
     def update(self, instance, validated_data):
-        print('hel')
-        instance.quantity = validated_data.get('quantity', instance.count)
+        print(instance)
+        instance.count = validated_data.get('quantity', instance.quantity)
         instance.save()
         return instance
 
